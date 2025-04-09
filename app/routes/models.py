@@ -20,24 +20,22 @@ class User(Base):
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     is_staff: Mapped[bool] = mapped_column(Boolean, default=False)
     is_superuser: Mapped[bool] = mapped_column(Boolean, default=False)
-    orders = relationship("Order",
-                          back_populates="user")  # Tuzatildi: "order_user" → "orders" (ko'proq buyurtma uchun plural)
-    reviews = relationship("Review", back_populates="user")  # Tuzatildi: "revoew_user" → "reviews" (imlo xatosi)
+    orders = relationship("Order", back_populates="user")
+    reviews = relationship("Review", back_populates="user")
 
 
 class Review(Base):
-    __tablename__ = "reviews"  # Tuzatildi: "revoews" → "reviews" (imlo xatosi)
+    __tablename__ = "reviews"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
     product_id: Mapped[int] = mapped_column(Integer, ForeignKey("products.id"))
     rating: Mapped[int] = mapped_column(Integer)
     comment: Mapped[str] = mapped_column(String(500), nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(
-        timezone.utc))  # Tuzatildi: "Date" → "DateTime" (diagrammaga mos)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(timezone.utc))
 
-    user = relationship("User", back_populates="reviews")  # Tuzatildi: "revoew_user" → "reviews" (imlo xatosi)
-    product = relationship("Product", back_populates="reviews")  # Tuzatildi: "revoew_product" → "reviews" (imlo xatosi)
+    user = relationship("User", back_populates="reviews")
+    product = relationship("Product", back_populates="reviews")
 
 
 
@@ -53,13 +51,11 @@ class Product(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(timezone.utc))
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(timezone.utc))
     is_available: Mapped[bool] = mapped_column(Boolean, default=True)
-    order_items = relationship("OrderItem",
-                               back_populates="product")  # Tuzatildi: "product_item" → "order_items" (imlo va munosabat xatosi)
-    cart_items = relationship("CartItem",
-                              back_populates="product")  # Tuzatildi: "cart_pro_item" → "cart_items" (imlo xatosi)
+    order_items = relationship("OrderItem", back_populates="product")
+    cart_items = relationship("CartItem", back_populates="product")
 
     category = relationship("Category", back_populates="products")
-    reviews = relationship("Review", back_populates="product")  # Tuzatildi: "revoew_product" → "reviews" (imlo xatosi)
+    reviews = relationship("Review", back_populates="product")
 
 
 class Category(Base):
@@ -68,10 +64,8 @@ class Category(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String, nullable=False)
     parent_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey("categories.id"), nullable=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(
-        timezone.utc))  # Tuzatildi: "Date" → "DateTime" (diagrammaga mos)
-    products = relationship("Product",
-                            back_populates="category")  # Tuzatildi: "category_produc" → "products" (imlo xatosi)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(timezone.utc))
+    products = relationship("Product", back_populates="category")
 
 
 class Order(Base):
@@ -81,10 +75,9 @@ class Order(Base):
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
     total_amount: Mapped[int] = mapped_column(Integer)
     status: Mapped[str] = mapped_column(String(50))
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(
-        timezone.utc))  # Tuzatildi: "Date" → "DateTime" (diagrammaga moslashtirish)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(timezone.utc))
     shipping_address: Mapped[str] = mapped_column(String(200))
-    order_items = relationship("OrderItem", back_populates="order")  # Tuzatildi: "order_item" → "order_items" (plural)
+    order_items = relationship("OrderItem", back_populates="order")
 
     user = relationship("User", back_populates="orders")
 
@@ -98,12 +91,10 @@ class OrderItem(Base):
     quantity: Mapped[int] = mapped_column(Integer)
     price: Mapped[int] = mapped_column(Integer)
     subtotal: Mapped[int] = mapped_column(Integer)
-    order_payment = relationship("Payment",
-                                 back_populates="order_item")  # Tuzatildi: "order" → "order_item" (diagrammaga mos)
+    order_payment = relationship("Payment", back_populates="order_item")
 
     order = relationship("Order", back_populates="order_items")
-    product = relationship("Product",
-                           back_populates="order_items")  # Tuzatildi: "product_item" → "order_items" (imlo va munosabat xatosi)
+    product = relationship("Product", back_populates="order_items")
 
 
 class Payment(Base):
@@ -114,11 +105,9 @@ class Payment(Base):
     amount: Mapped[int] = mapped_column(Integer, nullable=False)
     payment_method: Mapped[str] = mapped_column(String(255), nullable=False)
     status: Mapped[str] = mapped_column(String(255), nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(
-        timezone.utc))  # Tuzatildi: "Date" → "DateTime" (diagrammaga mos)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(timezone.utc))
 
-    order = relationship("Order",
-                         back_populates="order_items")  # Tuzatildi: "order_payment" → "order_items" (diagrammaga mos)
+    order = relationship("Order", back_populates="order_items")
 
 
 class Cart(Base):
@@ -126,8 +115,7 @@ class Cart(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int] = mapped_column(Integer, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(
-        timezone.utc))  # Tuzatildi: "Date" → "DateTime" (diagrammaga mos)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(timezone.utc))
     cart_items = relationship("CartItem", back_populates="cart")
 
 
