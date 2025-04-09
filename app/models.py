@@ -4,7 +4,7 @@ from typing import Optional
 
 from datetime import date, datetime, timezone, time
 
-from app.db.database import Base
+from app.database import Base
 
 class User(Base):
     __tablename__ = "users"
