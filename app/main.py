@@ -1,8 +1,12 @@
 from fastapi import FastAPI
+from app.routes import users
 
-app = FastAPI()
 
 
-@app.get('/')
-async def get_root():
-    return {"Asosiy qism Modeli va Kategotiyasi"}
+app = FastAPI(title="E-commerce API")
+
+app.include_router(users.router)
+
+@app.get("/")
+def read_root():
+    return {"message": "Welcome API"}
