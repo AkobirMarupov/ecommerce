@@ -1,12 +1,19 @@
 from fastapi import FastAPI
-from app.routes import users
+from app.routers import users
+from app.routers import products
+from app.routers import category
 
 
 
-app = FastAPI(title="E-commerce API")
+app = FastAPI()
 
-app.include_router(users.router)
+
 
 @app.get("/")
 def read_root():
     return {"message": "Welcome API"}
+
+
+app.include_router(users.router)
+app.include_router( products.router)
+app.include_router(category.router)

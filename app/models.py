@@ -114,7 +114,6 @@ class Category(Base):
     parent_id: Mapped[Optional[int]] = mapped_column(ForeignKey("categories.id"), nullable=True)
     created_at: Mapped[date] = mapped_column(Date, default=date.today)
 
-    # Aloqalar (agar kerak bo'lsa, rekursiv aloqa qo'shilishi mumkin)
     products: Mapped[list["Product"]] = relationship("Product", back_populates="category")
     parent: Mapped[Optional["Category"]] = relationship("Category", remote_side=[id], back_populates="children")
     children: Mapped[list["Category"]] = relationship("Category", back_populates="parent")
