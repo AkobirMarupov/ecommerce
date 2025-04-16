@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app import models
-from app.sxemas import user_schemas
+from app.schemas import users
 from app.dependencies import get_db
 from app.utils import hash_password, verify_password, create_access_token
 from datetime import timedelta
@@ -11,8 +11,8 @@ router = APIRouter(
     tags=["Auth"]
 )
 
-@router.post("/register", response_model=user_schemas.UserOutSchema)
-def register_user(user: user_schemas.UserCreateSchema, session: Session = Depends(get_db)):
+@router.post("/register", response_model=users.UserOutSchema)
+def register_user(user: users.UserCreateSchema, session: Session = Depends(get_db)):
     # Email yoki username allaqachon mavjudligini tekshirish
     db_email = session.query(models.User).filter(models.User.email == user.email).first()
     db_username = session.query(models.User).filter(models.User.username == user.username).first()
@@ -39,7 +39,7 @@ def register_user(user: user_schemas.UserCreateSchema, session: Session = Depend
     return db_user
 
 @router.post("/login")
-def login_user(user: user_schemas.UserLogin, session: Session = Depends(get_db)):
+def login_user(user: users.UserLogin, session: Session = Depends(get_db)):
     db_user = session.query(models.User).filter(models.User.email == user.email).first()
     if not db_user:
         raise HTTPException(status_code=401, detail="Noto'g'ri email yoki parol.")

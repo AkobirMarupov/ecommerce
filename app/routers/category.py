@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 
-from app.sxemas.categiries import CategoryCreate, CategoryResponse, CategoryUpdate
+from app.schemas.categiries import CategoryCreate, CategoryResponse, CategoryUpdate
 from app.dependencies import db_dep, current_user_dep
 from app.models import Category
 

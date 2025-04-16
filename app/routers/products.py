@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.sxemas.product_schema import *
+from app.schemas.products import *
 from app.dependencies import db_dep, current_user_dep
 from app.models import *
 
