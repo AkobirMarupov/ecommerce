@@ -67,9 +67,9 @@ class OrderItem(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     order_id: Mapped[int] = mapped_column(ForeignKey("orders.id"))
     product_id: Mapped[int] = mapped_column(ForeignKey("products.id"))
-    quantity: Mapped[int] = mapped_column(Integer, nullable=False)
+    quantity: Mapped[int] = mapped_column(Integer, nullable=False) # Mahsulotdan qancha dona buyurtma qilingani.
     price: Mapped[float] = mapped_column(Float, nullable=False)
-    subtotal: Mapped[float] = mapped_column(Float, nullable=False)
+    subtotal: Mapped[float] = mapped_column(Float, nullable=False) # Mahsulotning umumiy narxi
 
 
     order: Mapped["Order"] = relationship("Order", back_populates="items")
