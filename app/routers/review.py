@@ -13,8 +13,6 @@ router = APIRouter(
 
 
 
-
-
 @router.get('/', response_model=list[RewievResponse])
 async def get_reviews(session: db_dep):
     return session.query(Review).all()
@@ -47,7 +45,7 @@ async def create_review(review: RewievCreate, session: db_dep, current_user: cur
     session.add(create)
     session.commit()
     session.refresh(create)
-    
+
     return create
 
 

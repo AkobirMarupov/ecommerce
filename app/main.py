@@ -7,6 +7,8 @@ from app.routers import category
 from app.routers import order
 from app.routers import review
 from app.routers import order_item
+from app.routers import carts
+from app.routers import cart_item
 
 
 
@@ -25,6 +27,8 @@ app.include_router(category.router)
 app.include_router(order.router)
 app.include_router(order_item.router)
 app.include_router(review.router)
+app.include_router(carts.router)
+app.include_router(cart_item.router)
 
 
 
@@ -33,7 +37,7 @@ def custom_openapi():
         return app.openapi_schema
 
     openapi_schema = get_openapi(
-        title="Bilimdon Clone API",
+        title="E-COMMERSE",
         version="0.0.1",
         description="API with JWT-based Authentication",
         routes=app.routes,

@@ -1,6 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
-from typing import List
+from fastapi import APIRouter, HTTPException
 
 from app.schemas.categiries import CategoryCreate, CategoryResponse, CategoryUpdate
 from app.dependencies import db_dep, current_user_dep
@@ -24,7 +22,7 @@ async def get_category(id: int, session: db_dep, current_user: current_user_dep)
     return db_category
 
 
-@router.get('/', response_model= CategoryResponse)
+@router.get('/', response_model= list[CategoryResponse])
 async def get_response(session: db_dep, current_user: current_user_dep, skip: int = 0, limit: int = 100):
 
     categories = session.query(Category).offset(skip).limit(limit).all()

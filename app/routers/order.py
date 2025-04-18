@@ -5,11 +5,18 @@ from app.schemas.orderitem import  OrderItemCreate
 from app.schemas.order import OrderCreate, OrderResponse, OrderUpdate
 from typing import List
 
+
+
 router = APIRouter(prefix="/orders", tags=["Orders"])
+
+
+
 
 @router.get('/', response_model=List[OrderResponse])
 async def get_order(session: db_dep):
     return session.query(Order).all()
+
+
 
 @router.get('/{order_id}', response_model=OrderResponse)
 async def order_one(order_id: int, session: db_dep):
@@ -17,6 +24,9 @@ async def order_one(order_id: int, session: db_dep):
     if not db_order:
         raise HTTPException(status_code=404, detail="Buyurtma topilmadi")
     return db_order
+
+
+
 
 @router.post('/order', response_model=OrderResponse)
 async def create_order(order: OrderCreate, items: List[OrderItemCreate], session: db_dep, current_user: current_user_dep):
@@ -56,6 +66,8 @@ async def create_order(order: OrderCreate, items: List[OrderItemCreate], session
     session.refresh(db_order)
     return db_order
 
+
+
 @router.put('/update/{order_id}', response_model=OrderResponse)
 async def update_order(order_id: int, order: OrderUpdate, session: db_dep, current_user: current_user_dep):
     db_order = session.query(Order).filter(Order.id == order_id).first()
@@ -73,6 +85,9 @@ async def update_order(order_id: int, order: OrderUpdate, session: db_dep, curre
     session.commit()
     session.refresh(db_order)
     return db_order
+
+
+
 
 @router.delete('/{order_id}')
 async def delete_order(order_id: int, session: db_dep, current_user: current_user_dep):
