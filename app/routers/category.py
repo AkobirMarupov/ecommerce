@@ -33,18 +33,15 @@ async def get_response(session: db_dep, current_user: current_user_dep, skip: in
 
 
 
-@router.post('/', response_model= CategoryResponse)
+from datetime import datetime
+
+@router.post('/', response_model=CategoryResponse)
 async def creat_category(category: CategoryCreate, session: db_dep, current_user: current_user_dep):
-
-    db_careate = session.query(Category).filter(Category.id == category.parent_id).first()
-
-    if not db_careate:
-        raise HTTPException(status_code=404, detail="Bunday id dagi categoriya topilmadi")
-    
+   
     db_add = Category(
-        name = category.name,
-        parent_id = category.parent_id,
-        created_at = category.created_at
+        name=category.name,
+        parent_id=None,  
+        created_at=datetime.now() 
     )
 
     session.add(db_add)
@@ -52,6 +49,7 @@ async def creat_category(category: CategoryCreate, session: db_dep, current_user
     session.refresh(db_add)
 
     return db_add
+
 
 
 @router.put('/{category_id}', response_model= CategoryResponse)

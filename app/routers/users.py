@@ -13,7 +13,7 @@ router = APIRouter(
 
 @router.post("/register", response_model=users.UserOutSchema)
 def register_user(user: users.UserCreateSchema, session: Session = Depends(get_db)):
-    # Email yoki username allaqachon mavjudligini tekshirish
+   
     db_email = session.query(models.User).filter(models.User.email == user.email).first()
     db_username = session.query(models.User).filter(models.User.username == user.username).first()
     if db_email:
@@ -21,7 +21,7 @@ def register_user(user: users.UserCreateSchema, session: Session = Depends(get_d
     if db_username:
         raise HTTPException(status_code=400, detail="Bunday username band.")
 
-    # Username berilmagan bo'lsa, emaildan olish
+   
     username = user.username if user.username else user.email.split("@")[0]
     
     hashed_password = hash_password(user.password)
@@ -36,6 +36,7 @@ def register_user(user: users.UserCreateSchema, session: Session = Depends(get_d
     session.add(db_user)
     session.commit()
     session.refresh(db_user)
+
     return db_user
 
 @router.post("/login")
@@ -47,8 +48,8 @@ def login_user(user: users.UserLogin, session: Session = Depends(get_db)):
     if not verify_password(user.password, db_user.hash_password):
         raise HTTPException(status_code=401, detail="Noto'g'ri email yoki parol.")
     
-    # JWT token yaratish
-    access_token_expires = timedelta(minutes=30)  # ACCESS_TOKEN_EXPIRE_MINUTES ga mos
+    
+    access_token_expires = timedelta(minutes=30)  
     access_token = create_access_token(
         data={"email": db_user.email},
         expires_delta=access_token_expires

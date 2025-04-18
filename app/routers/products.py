@@ -9,6 +9,7 @@ router = APIRouter(
     tags=["Product"]
 )
 
+
 @router.get("/", response_model=list[ProductOutSchema])
 def get_all_products(
     session: db_dep,
@@ -19,12 +20,14 @@ def get_all_products(
     products = session.query(Product).offset(skip).limit(limit).all()
     return products
 
+
 @router.get("/search", response_model=list[ProductOutSchema])
 async def search_product(name: str, session: db_dep, current_user: current_user_dep):
     db_products = session.query(Product).filter(Product.name.ilike(f"%{name}%")).all()
     if not db_products:
         raise HTTPException(status_code=404, detail="Bunday nomdagi mahsulot topilmadi")
     return db_products
+
 
 @router.post("/", response_model=ProductOutSchema)
 async def create_product(product: ProductCreateSchema, session: db_dep, current_user: current_user_dep):
@@ -45,6 +48,7 @@ async def create_product(product: ProductCreateSchema, session: db_dep, current_
     session.refresh(db_product)
     return db_product
 
+
 @router.put("/{product_id}", response_model=ProductOutSchema)
 async def update_product(
     product_id: int,
@@ -62,6 +66,7 @@ async def update_product(
     session.commit()
     session.refresh(product)
     return product
+
 
 @router.delete("/{product_id}", response_model=None)
 async def delete_product(product_id: int, session: db_dep, current_user: current_user_dep):
