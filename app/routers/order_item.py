@@ -3,7 +3,14 @@ from app.dependencies import db_dep, current_user_dep
 from app.models import Order, OrderItem, Product
 from app.schemas.orderitem import OrderItemCreate, OrderItemUpdate, OrderItemResponse
 
+
 router = APIRouter(prefix="/order-items", tags=["Order Items"])
+
+
+@router.get('/', response_model=list[OrderItemResponse])
+async def get_items(session: db_dep, current_user: current_user_dep):
+    return session.query(OrderItem).all()
+
 
 @router.post('/{order_id}/items', response_model=OrderItemResponse)
 async def create_order_item(order_id: int, item: OrderItemCreate, session: db_dep, current_user: current_user_dep):
@@ -39,6 +46,7 @@ async def create_order_item(order_id: int, item: OrderItemCreate, session: db_de
     session.refresh(db_item)
 
     return db_item
+
 
 @router.put('/items/{item_id}', response_model=OrderItemResponse)
 async def update_order_item(item_id: int, item: OrderItemUpdate, session: db_dep, current_user: current_user_dep):
@@ -92,6 +100,8 @@ async def update_order_item(item_id: int, item: OrderItemUpdate, session: db_dep
     session.commit()
     session.refresh(db_item)
     return db_item
+
+
 
 @router.delete('/items/{item_id}')
 async def delete_order_item(item_id: int, session: db_dep, current_user: current_user_dep):

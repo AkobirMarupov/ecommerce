@@ -60,3 +60,59 @@ Translation va Currency modellar orqali amalga oshiriladi.
 10. ❤️ Wishlist yoki Favorites
 Foydalanuvchilar yoqtirgan mahsulotlarini saqlashi.
 
+### Har bir modelning vazifalari
+
+cart.py
+→ Cart modeli: foydalanuvchining xarid savati haqida ma'lumotlarni saqlaydi.
+
+cart_item.py
+→ CartItem modeli: xarid savatidagi mahsulotlar ro‘yxatini saqlaydi.
+
+category.py
+→ Category modeli: mahsulot kategoriyalari bilan ishlaydi.
+
+coupon.py
+→ Coupon modeli: chegirmali kuponlar haqidagi ma'lumotlarni saqlaydi.
+
+inventory.py
+→ Inventory modeli: mahsulot zaxiralari (ombor holati)ni saqlaydi.
+
+invoice.py
+→ Invoice modeli: foydalanuvchiga yuborilgan hisob-faktura (invoice) ma’lumotlarini saqlaydi.
+
+order.py
+→ Order modeli: foydalanuvchi bergan buyurtmalar haqidagi umumiy ma'lumotlar.
+
+order_item.py
+→ OrderItem modeli: buyurtmadagi alohida mahsulotlarni ifodalaydi.
+
+payment.py
+→ Payment modeli: to‘lovlar haqida umumiy ma'lumotlarni saqlaydi.
+
+payment_history.py
+→ PaymentHistory modeli: foydalanuvchining to‘lovlar tarixini yozadi.
+
+product.py
+→ Product modeli: mahsulotlar haqida asosiy ma'lumotlarni saqlaydi.
+
+product_media.py
+→ ProductImage modeli: mahsulotga tegishli rasm yoki videolarni saqlaydi.
+
+review.py
+→ Review modeli: foydalanuvchilarning mahsulot haqidagi izohlari va reytinglarini saqlaydi.
+
+seller.py
+→ SellerProfile modeli: sotuvchining profil va ma'lumotlarini saqlaydi.
+
+shipping.py
+→ ShippingMethod modeli: yetkazib berish usullari va tafsilotlarini ifodalaydi.
+
+translation.py
+→ ProductTranslation modeli: mahsulotlarning ko‘p tilli tarjimalarini saqlaydi.
+
+user.py
+→ User modeli: foydalanuvchilar haqida umumiy ma’lumotlarni saqlaydi (login, email, h.k.).
+
+wishlist.py
+→ Wishlist modeli: foydalanuvchining “xohlovchilar ro‘yxati”dagi mahsulotlarni saqlaydi.
+

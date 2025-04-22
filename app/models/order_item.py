@@ -5,7 +5,6 @@ from app.database import Base
 
 
 
-
 class OrderItem(Base):
     __tablename__ = "order_items"
 

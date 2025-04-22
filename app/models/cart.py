@@ -1,9 +1,8 @@
 from sqlalchemy import Integer, Date, ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped, relationship
 from datetime import date
+
 from app.database import Base
-
-
 
 
 class Cart(Base):

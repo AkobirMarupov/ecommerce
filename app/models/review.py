@@ -6,6 +6,7 @@ from app.database import Base
 
 
 
+
 class Review(Base):
     __tablename__ = "reviews"
 

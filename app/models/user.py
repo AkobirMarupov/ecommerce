@@ -5,8 +5,6 @@ from datetime import date, datetime
 from app.database import Base
 
 
-
-
 class User(Base):
     __tablename__ = "users"
 
@@ -23,7 +21,9 @@ class User(Base):
     is_superuser: Mapped[bool] = mapped_column(Boolean, default=False)
 
 
+    sellerprofil: Mapped["SellerProfile"] = relationship("SellerProfile", back_populates="user")
     reviews: Mapped[list["Review"]] = relationship("Review", back_populates="user")
     orders: Mapped[list["Order"]] = relationship("Order", back_populates="user")
     carts: Mapped[list["Cart"]] = relationship("Cart", back_populates="user")
-
+    history: Mapped["PaymentHistory"] = relationship("PaymentHistory", back_populates="user")
+    wishlist_user: Mapped["Wishlist"] = relationship("Wishlist", back_populates="user")

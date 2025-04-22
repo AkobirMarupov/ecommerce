@@ -3,7 +3,7 @@ from datetime import date
 from typing import Optional
 
 
-class UserCreateSchema(BaseModel):
+class UserCreate(BaseModel):
     email: EmailStr
     password: str
     username: Optional[str] = None
@@ -12,7 +12,7 @@ class UserCreateSchema(BaseModel):
     date_of_birth: Optional[date] = None
 
 
-class UserOutSchema(BaseModel):
+class UserResponse(BaseModel):
     id: int
     email: EmailStr
     username: str

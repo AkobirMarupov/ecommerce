@@ -4,7 +4,6 @@ from sqlalchemy.orm import mapped_column, Mapped, relationship
 from app.database import Base
 
 
-
 class CartItem(Base):
     __tablename__ = "cart_items"
 

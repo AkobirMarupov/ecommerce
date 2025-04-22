@@ -6,7 +6,6 @@ from app.database import Base
 
 
 
-
 class Payment(Base):
     __tablename__ = "payments"
 

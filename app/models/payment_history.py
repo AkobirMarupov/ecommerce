@@ -1,7 +1,9 @@
 from sqlalchemy import Integer, ForeignKey, String, Float, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime
+
 from app.database import Base
+
 
 class PaymentHistory(Base):
     __tablename__ = "payment_history"
@@ -13,4 +15,4 @@ class PaymentHistory(Base):
     status: Mapped[str] = mapped_column(String, nullable=True)
     timestamp: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
-    user: Mapped["User"] = relationship("User")
+    user: Mapped["User"] = relationship("User", back_populates="history")

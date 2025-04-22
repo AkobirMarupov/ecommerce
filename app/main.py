@@ -9,7 +9,7 @@ from app.routers import review
 from app.routers import order_item
 from app.routers import carts
 from app.routers import cart_item
-
+from app.routers import Inventory
 
 
 app = FastAPI()
@@ -29,6 +29,7 @@ app.include_router(order_item.router)
 app.include_router(review.router)
 app.include_router(carts.router)
 app.include_router(cart_item.router)
+app.include_router(Inventory.router)
 
 
 

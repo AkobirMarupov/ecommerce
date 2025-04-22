@@ -17,14 +17,12 @@ async def get_order(session: db_dep):
     return session.query(Order).all()
 
 
-
 @router.get('/{order_id}', response_model=OrderResponse)
 async def order_one(order_id: int, session: db_dep):
     db_order = session.query(Order).filter(Order.id == order_id).first()
     if not db_order:
         raise HTTPException(status_code=404, detail="Buyurtma topilmadi")
     return db_order
-
 
 
 

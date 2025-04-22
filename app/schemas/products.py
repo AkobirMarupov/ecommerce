@@ -9,16 +9,18 @@ class ProductCreateSchema(BaseModel):
     price: int
     stock: int  # omborda nechata bor yuqligi
     category_id: int
+    seller_id: int
     is_available: bool = True  # mahsulotning bor yoki yuqligi
 
 
 class ProductUpdateSchema(BaseModel):
-    name: Optional[str] = None
-    description: Optional[str] = None
-    price: Optional[int]
-    stock: Optional[int]
-    category_id: Optional[int]
-    is_available: Optional[bool] = True
+    name: str | None = None
+    description: str | None = None
+    price: int | None = None
+    stock: int | None = None
+    category_id: int | None = None
+    seller_id: int | None = None
+    is_available: bool | None = None
 
 
 class ProductOutSchema(BaseModel):
@@ -28,6 +30,7 @@ class ProductOutSchema(BaseModel):
     price: int
     stock: int
     category_id: int
+    seller_id: int
     created_at: datetime
     updated_at: datetime
     is_available: bool

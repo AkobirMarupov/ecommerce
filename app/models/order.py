@@ -5,8 +5,6 @@ from datetime import date
 from app.database import Base
 
 
-
-
 class Order(Base):
     __tablename__ = "orders"
 
@@ -17,7 +15,9 @@ class Order(Base):
     created_at: Mapped[date] = mapped_column(Date, default=date.today)
     shipping_address: Mapped[str] = mapped_column(String, nullable=True)
 
-
+    invoice: Mapped["Invoice"] = relationship("Invoice", back_populates="order", uselist=False)
     user: Mapped["User"] = relationship("User", back_populates="orders")
     items: Mapped[list["OrderItem"]] = relationship("OrderItem", back_populates="order")
     payment: Mapped["Payment"] = relationship("Payment", back_populates="order", uselist=False)
+
+

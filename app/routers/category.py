@@ -23,9 +23,9 @@ async def get_category(id: int, session: db_dep, current_user: current_user_dep)
 
 
 @router.get('/', response_model= list[CategoryResponse])
-async def get_response(session: db_dep, current_user: current_user_dep, skip: int = 0, limit: int = 100):
+async def get_response(session: db_dep, current_user: current_user_dep):
 
-    categories = session.query(Category).offset(skip).limit(limit).all()
+    categories = session.query(Category).all()
 
     return categories
 

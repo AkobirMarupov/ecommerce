@@ -1,6 +1,9 @@
 from sqlalchemy import Integer, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.database import Base
+
+
 
 class ProductTranslation(Base):
     __tablename__ = "product_translations"
@@ -11,4 +14,4 @@ class ProductTranslation(Base):
     name: Mapped[str] = mapped_column(String, nullable=False)
     description: Mapped[str] = mapped_column(String, nullable=True)
 
-    product: Mapped["Product"] = relationship("Product")
+    product: Mapped["Product"] = relationship("Product", back_populates="translation")

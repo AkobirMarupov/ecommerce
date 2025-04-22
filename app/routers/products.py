@@ -14,10 +14,9 @@ router = APIRouter(
 def get_all_products(
     session: db_dep,
     current_user: current_user_dep,
-    skip: int = 0,
-    limit: int = 100
-):
-    products = session.query(Product).offset(skip).limit(limit).all()
+  ):
+    products = session.query(Product).all()
+
     return products
 
 
@@ -41,6 +40,7 @@ async def create_product(product: ProductCreateSchema, session: db_dep, current_
         price=product.price,
         stock=product.stock,
         category_id=product.category_id,
+        seller_id=product.seller_id,
         is_available=product.is_available
     )
     session.add(db_product)
@@ -49,23 +49,24 @@ async def create_product(product: ProductCreateSchema, session: db_dep, current_
     return db_product
 
 
-@router.put("/{product_id}", response_model=ProductOutSchema)
+@router.patch("/{product_id}", response_model=ProductOutSchema)
 async def update_product(
     product_id: int,
     product_data: ProductUpdateSchema,
     session: db_dep,
     current_user: current_user_dep
 ):
-    product = session.query(Product).filter(Product.id == product_id).first()
-    if product is None:
+    product_is = session.query(Product).filter(Product.id == product_id).first()
+
+    if product_is is None:
         raise HTTPException(status_code=404, detail="Bunday id dagi mahsulot mavjud emas.")
 
-    for field, value in product_data.dict(exclude_unset=True).items():
-        setattr(product, field, value)
+    for key, value in product_data.model_dump(exclude_unset=True).items():
+        setattr(product, key, value)
     
     session.commit()
-    session.refresh(product)
-    return product
+    session.refresh(product_is)
+    return product_is
 
 
 @router.delete("/{product_id}", response_model=None)
