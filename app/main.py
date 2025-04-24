@@ -10,6 +10,9 @@ from app.routers import order_item
 from app.routers import carts
 from app.routers import cart_item
 from app.routers import Inventory
+from app.routers import seller
+from app.routers import invoise
+from app.routers import shipping
 
 
 app = FastAPI()
@@ -30,6 +33,10 @@ app.include_router(review.router)
 app.include_router(carts.router)
 app.include_router(cart_item.router)
 app.include_router(Inventory.router)
+app.include_router(seller.router)
+app.include_router(invoise.router)
+app.include_router(shipping.router)
+
 
 
 

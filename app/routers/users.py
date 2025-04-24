@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 from app import models
 from app.schemas.users import UserLogin, UserCreate, UserResponse
 from app.dependencies import db_dep, current_user_dep
-from app.utils import hash_password, verify_password, create_access_token
+from app.utils.auth import hash_password, verify_password, create_access_token
 from datetime import timedelta
 
 router = APIRouter(

@@ -23,7 +23,8 @@ class Product(Base):
     reviews: Mapped[list["Review"]] = relationship("Review", back_populates="product")
     order_items: Mapped[list["OrderItem"]] = relationship("OrderItem", back_populates="product")
     cart_items: Mapped[list["CartItem"]] = relationship("CartItem", back_populates="product")
-    images: Mapped["ProductImage"] = relationship("ProductImage", back_populates="product")
+    images: Mapped[list["ProductImage"]] = relationship("ProductImage", back_populates="product",
+                                                        cascade="all, delete-orphan")
     seller: Mapped["SellerProfile"] = relationship("SellerProfile", back_populates="products")
     inventory: Mapped["Inventory"] = relationship("Inventory", back_populates="product")
     translation: Mapped["ProductTranslation"] = relationship("ProductTranslation", back_populates="product")

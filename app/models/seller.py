@@ -1,6 +1,6 @@
-from sqlalchemy import Integer, String, ForeignKey, DateTime, Float
+from sqlalchemy import Integer, String, ForeignKey, Float, Date
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from datetime import datetime
+from datetime import date
 
 from app.database import Base
 
@@ -14,7 +14,7 @@ class SellerProfile(Base):
     description: Mapped[str] = mapped_column(String, nullable=True)
     rating: Mapped[float] = mapped_column(Float, default=0.0)
     # is_active: faollik holati (True/False).
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    created_at: Mapped[date] = mapped_column(Date, default=date)
 
     user: Mapped["User"] = relationship("User", back_populates="sellerprofil")
     products: Mapped[list["Product"]] = relationship("Product", back_populates="seller")

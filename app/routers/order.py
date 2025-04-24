@@ -105,3 +105,8 @@ async def delete_order(order_id: int, session: db_dep, current_user: current_use
     session.delete(db_order)
     session.commit()
     return {"message": "Buyurtma muvaffaqiyatli o'chirildi"}
+
+
+
+
+

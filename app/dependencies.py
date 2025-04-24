@@ -5,7 +5,7 @@ from jose import jwt, JWTError
 
 from app.database import SessionLocal
 from app.models import User
-from app.utils import SECRET_KEY, ALGORITHM  # config.py ga ajratildi
+from app.utils.auth import SECRET_KEY, ALGORITHM  
 
 
 def get_db():
