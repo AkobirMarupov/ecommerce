@@ -1,10 +1,10 @@
 from fastapi import APIRouter, HTTPException
 from app.dependencies import db_dep, current_user_dep
-from app.models import Order, OrderItem, Product
+from app.models import Order, OrderItem, Product, Coupon
 from app.schemas.orderitem import  OrderItemCreate
 from app.schemas.order import OrderCreate, OrderResponse, OrderUpdate
 from typing import List
-
+from datetime import date
 
 
 router = APIRouter(prefix="/orders", tags=["Orders"])
@@ -27,7 +27,8 @@ async def order_one(order_id: int, session: db_dep):
 
 
 @router.post('/order', response_model=OrderResponse)
-async def create_order(order: OrderCreate, items: List[OrderItemCreate], session: db_dep, current_user: current_user_dep):
+async def create_order(order: OrderCreate, items: List[OrderItemCreate], session: db_dep,
+                       current_user: current_user_dep):
     order_data = order.model_dump()
     order_data["user_id"] = current_user.id
 
@@ -41,9 +42,34 @@ async def create_order(order: OrderCreate, items: List[OrderItemCreate], session
 
         total_amount += item.quantity * item.price
 
-    order_data["total_amount"] = total_amount
-    db_order = Order(**order_data)
+    # 🟡 Coupon check
+    discount_amount = 0
+    coupon_id = None
+    if order.coupon_code:
+        coupon = session.query(Coupon).filter(Coupon.code == order.coupon_code).first()
+        if not coupon:
+            raise HTTPException(status_code=404, detail="Kupon topilmadi")
+        if not coupon.active:
+            raise HTTPException(status_code=400, detail="Kupon faollashtirilmagan")
+        today = date.today()
+        if coupon.valid_from and coupon.valid_from > today:
+            raise HTTPException(status_code=400, detail="Kupon hali kuchga kirmagan")
+        if coupon.valid_until and coupon.valid_until < today:
+            raise HTTPException(status_code=400, detail="Kupon muddati tugagan")
 
+        # chegirma summasini hisoblash
+        if coupon.discount_type == 'percent':
+            discount_amount = (total_amount * coupon.discount_amount) / 100
+        elif coupon.discount_type == 'amount':
+            discount_amount = coupon.discount_amount
+        coupon_id = coupon.id
+
+    final_total = total_amount - discount_amount
+    order_data["total_amount"] = int(final_total)
+    order_data["discount_amount"] = float(discount_amount)
+    order_data["coupon_id"] = coupon_id
+
+    db_order = Order(**order_data)
     session.add(db_order)
     session.flush()
 
@@ -56,14 +82,13 @@ async def create_order(order: OrderCreate, items: List[OrderItemCreate], session
             subtotal=item.quantity * item.price
         )
         session.add(db_item)
-        product = session.query(Product).filter(Product.id == item.product_id).first()
 
+        product = session.query(Product).filter(Product.id == item.product_id).first()
         product.stock -= item.quantity
 
     session.commit()
     session.refresh(db_order)
     return db_order
-
 
 
 @router.put('/update/{order_id}', response_model=OrderResponse)

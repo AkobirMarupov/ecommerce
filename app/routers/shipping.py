@@ -46,7 +46,7 @@ async def create_shipping(
         name=shipping.name,
         region=shipping.region,
         price=price,
-        estimated_days=shipping.estimated_days.day
+        estimated_days=shipping.estimated_days
     )
     session.add(db_shipping)
     session.commit()

@@ -8,6 +8,8 @@ class OrderCreate(BaseModel):
     status: str 
     created_at: date
     shipping_address: str
+    coupon_code: str | None = None
+
 
 
 class OrderUpdate(BaseModel):
@@ -16,6 +18,7 @@ class OrderUpdate(BaseModel):
     status: str | None = None
     created_at: date | None = None
     shipping_address: str | None = None
+    coupon_code: str | None = None
 
 
 class OrderResponse(BaseModel):
@@ -25,3 +28,9 @@ class OrderResponse(BaseModel):
     status: str 
     created_at: date
     shipping_address: str
+    coupon_id: int | None = None
+    discount_amount: float = 0.0
+
+
+    class Config:
+        orm_mode = True

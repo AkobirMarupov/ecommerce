@@ -1,12 +1,9 @@
-from fastapi import APIRouter, HTTPException, UploadFile, File, Depends
-from sqlalchemy.orm import Session
-import shutil
-import uuid
+from fastapi import APIRouter, HTTPException
+
 import os
 from app.schemas.image import  ProductMediaUpdate, ProductMediaResponse
 from app.models.product_media import ProductImage
-from app.models.user import User
-from app.dependencies import db_dep, current_user_dep, get_db, get_current_user
+from app.dependencies import db_dep, current_user_dep
 
 
 
